@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[KLINIKA NOMI] — Futuristic MedTech & Premium Tibbiyot Markazi</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        },
+                        teal: {
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                        },
+                        mint: '#34d399',
+                        darkbg: '#0b1329',
+                        darkcard: '#111c38',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 3s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        glow: {
+                            '0%': { opacity: '0.4', filter: 'drop-shadow(0 0 15px rgba(14,165,233,0.4))' },
+                            '100%': { opacity: '0.9', filter: 'drop-shadow(0 0 35px rgba(20,184,166,0.8))' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom CSS for Glassmorphism & Aesthetics -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Custom Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .glass-card {
+            background: rgba(17, 28, 56, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .dark .glass-nav {
+            background: rgba(11, 19, 41, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Dynamic Custom Glows */
+        .glow-effect {
+            position: relative;
+        }
+        .glow-effect::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #0ea5e9, #14b8a6, #34d399);
+            border-radius: inherit;
+            z-index: -1;
+            filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .glow-effect:hover::before {
+            opacity: 0.8;
+        }
+
+        /* 3D Tilt Glare Effect */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.15s ease-out;
+        }
+        .tilt-content {
+            transform: translateZ(30px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0ea5e9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14b8a6;
+        }
+
+        /* Custom Cursor Dot */
+        #custom-cursor {
+            pointer-events: none;
+            transition: transform 0.1s ease-out, opacity 0.2s ease;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-darkbg dark:text-slate-100 antialiased selection:bg-sky-500 selection:text-white">
+
+    <!-- Custom Floating Cursor -->
+    <div id="custom-cursor" class="fixed top-0 left-0 w-6 h-6 rounded-full border-2 border-sky-400 bg-teal-400/20 hidden md:block -translate-x-1/2 -translate-y-1/2"></div>
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-950 text-white transition-opacity duration-700">
+        <div class="relative flex items-center justify-center">
+            <div class="w-24 h-24 rounded-full border-4 border-sky-500/20 border-t-sky-400 animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i data-lucide="heart-pulse" class="w-10 h-10 text-teal-400 animate-pulse"></i>
+            </div>
+        </div>
+        <h2 class="mt-6 text-xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-mint font-heading brand-name">[KLINIKA NOMI]</h2>
+        <p class="mt-2 text-xs text-slate-400 tracking-widest uppercase">Futuristic MedTech Center</p>
+    </div>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#hero" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-500 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-sky-500/30 group-hover:scale-105 transition-transform duration-300">
+                        <i data-lucide="activity" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight font-heading text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-teal-400 dark:from-sky-400 dark:to-teal-300 brand-name">
+                            [KLINIKA NOMI]
+                        </span>
+                        <span class="block text-[10px] tracking-widest uppercase text-slate-500 dark:text-slate-400 font-semibold">Medical Center</span>
+                    </div>
+                </a>
+
+                <!-- Nav Links (Desktop) -->
+                <nav class="hidden lg:flex items-center space-x-8 font-medium text-sm text-slate-700 dark:text-slate-200">
+                    <a href="#services" class="hover:text-sky-500 dark:hover:text-sky-400 transition-colors" data-i18n="nav_services">Xizmatlar</a>
+                    <a href="#tour" class="hover:text-sky-500 dark:hover:text-sky-400 transition-colors" data-i18n="nav_tour">3D Virtual Tur</a>
+                    <a href="#doctors" class="hover:text-sky-500 dark:hover:text-sky-400 transition-colors" data-i18n="nav_doctors">Shifokorlar</a>
+                    <a href="#pricing" class="hover:text-sky-500 dark:hover:text-sky-400 transition-colors" data-i18n="nav_pricing">Narxlar</a>
+                    <a href="#about" class="hover:text-sky-500 dark:hover:text-sky-400 transition-colors" data-i18n="nav_about">Biz haqimizda</a>
+                    <a href="#contact" class="hover:text-sky-500 dark:hover:text-sky-400 transition-colors" data-i18n="nav_contact">Aloqa</a>
+                </nav>
+
+                <!-- Actions: Language, Theme, Booking CTA -->
+                <div class="hidden sm:flex items-center gap-4">
+                    <!-- Language Selector -->
+                    <div class="relative bg-slate-100 dark:bg-slate-800/80 rounded-xl p-1 flex items-center text-xs font-semibold">
+                        <button onclick="setLanguage('uz')" id="lang-uz" class="px-2.5 py-1 rounded-lg transition-all bg-sky-500 text-white shadow-sm">UZ</button>
+                        <button onclick="setLanguage('ru')" id="lang-ru" class="px-2.5 py-1 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-sky-400">RU</button>
+                        <button onclick="setLanguage('en')" id="lang-en" class="px-2.5 py-1 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-sky-400">EN</button>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-sky-500 transition-all">
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+
+                    <!-- CTA Button -->
+                    <button onclick="openBookingModal()" class="glow-effect relative px-5 py-2.5 rounded-2xl bg-gradient-to-r from-sky-500 to-teal-500 text-white font-semibold text-sm shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 transition-all duration-300 active:scale-95 flex items-center gap-2">
+                        <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                        <span data-i18n="btn_book">Qabulga yozilish</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden flex items-center gap-3">
+                    <button id="theme-toggle-mobile" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-200 dark:border-slate-800 bg-slate-900/95 backdrop-blur-2xl text-white px-6 py-6 space-y-4">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <span class="text-xs uppercase tracking-widest text-slate-400">Tilni tanlang:</span>
+                <div class="flex gap-2">
+                    <button onclick="setLanguage('uz')" class="px-3 py-1 rounded bg-sky-500 text-xs font-bold text-white">UZ</button>
+                    <button onclick="setLanguage('ru')" class="px-3 py-1 rounded bg-slate-800 text-xs font-bold text-slate-300">RU</button>
+                    <button onclick="setLanguage('en')" class="px-3 py-1 rounded bg-slate-800 text-xs font-bold text-slate-300">EN</button>
+                </div>
+            </div>
+            <a href="#services" onclick="toggleMobileMenu()" class="block py-2 text-lg font-medium" data-i18n="nav_services">Xizmatlar</a>
+            <a href="#tour" onclick="toggleMobileMenu()" class="block py-2 text-lg font-medium" data-i18n="nav_tour">3D Virtual Tur</a>
+            <a href="#doctors" onclick="toggleMobileMenu()" class="block py-2 text-lg font-medium" data-i18n="nav_doctors">Shifokorlar</a>
+            <a href="#pricing" onclick="toggleMobileMenu()" class="block py-2 text-lg font-medium" data-i18n="nav_pricing">Narxlar</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block py-2 text-lg font-medium" data-i18n="nav_about">Biz haqimizda</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 text-lg font-medium" data-i18n="nav_contact">Aloqa</a>
+            <button onclick="toggleMobileMenu(); openBookingModal();" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 text-white font-bold text-center flex items-center justify-center gap-2">
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+                <span data-i18n="btn_book">Qabulga yozilish</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION WITH 3D INTERACTIVE CANVAS -->
+    <section id="hero" class="relative pt-28 lg:pt-36 pb-20 min-h-screen flex items-center overflow-hidden">
+        <!-- Ambient Glowing Background Shapes -->
+        <div class="absolute top-1/4 -left-20 w-96 h-96 bg-sky-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-10 right-0 w-[500px] h-[500px] bg-teal-500/20 rounded-full blur-[150px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Text Content -->
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sky-600 dark:text-sky-300 text-xs font-semibold tracking-wide border border-sky-500/20 shadow-sm animate-float">
+                        <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
+                        <i data-lucide="sparkles" class="w-4 h-4 text-sky-400"></i>
+                        <span data-i18n="hero_badge">Keyingi Avlod MedTech Klinikasi</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] font-heading">
+                        <span data-i18n="hero_title_1">Sog'lig'ingiz Uchun</span> <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 via-teal-400 to-mint" data-i18n="hero_title_2">
+                            Futuristik va Yuqori Aniq
+                        </span> <br>
+                        <span data-i18n="hero_title_3">Tibbiy Tasisat</span>
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed" data-i18n="hero_desc">
+                        Sun'iy intellekt tashxislash ko'magi, 3D vizualizatsiya hamda Yevropa standartidagi xalqaro shifokorlar jamoasi. Salomatligingiz — bizning eng oliy qadriyatimiz.
+                    </p>
+
+                    <!-- Interactive 3D Model Control Switcher -->
+                    <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-2">
+                        <span class="text-xs text-slate-400 mr-2 font-medium" data-i18n="3d_mode_title">3D Rejim:</span>
+                        <button onclick="switch3DModel('dna')" id="btn-3d-dna" class="px-3 py-1.5 rounded-lg text-xs font-semibold glass-card border-sky-500 text-sky-500 transition-all">DNK Spirali</button>
+                        <button onclick="switch3DModel('heart')" id="btn-3d-heart" class="px-3 py-1.5 rounded-lg text-xs font-semibold glass-card text-slate-400 hover:text-white transition-all">3D Yurak</button>
+                        <button onclick="switch3DModel('dental')" id="btn-3d-dental" class="px-3 py-1.5 rounded-lg text-xs font-semibold glass-card text-slate-400 hover:text-white transition-all">Stomatologiya</button>
+                        <button onclick="switch3DModel('brain')" id="btn-3d-brain" class="px-3 py-1.5 rounded-lg text-xs font-semibold glass-card text-slate-400 hover:text-white transition-all">Neyro Tarmoq</button>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <button onclick="openBookingModal()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 via-teal-500 to-mint text-white font-bold text-base shadow-xl shadow-sky-500/25 hover:shadow-sky-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            <span data-i18n="hero_cta_primary">Onlayn Qabulga Yozilish</span>
+                        </button>
+                        <a href="#tour" class="w-full sm:w-auto px-8 py-4 rounded-2xl glass-card font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800/80 transition-all flex items-center justify-center gap-3 border border-slate-300 dark:border-slate-700">
+                            <i data-lucide="play-circle" class="w-5 h-5 text-sky-400"></i>
+                            <span data-i18n="hero_cta_secondary">3D Klinikani Ko'rish</span>
+                        </a>
+                    </div>
+
+                    <!-- Trust Stats Badge Row -->
+                    <div class="pt-8 grid grid-cols-3 gap-4 border-t border-slate-200/60 dark:border-slate-800/80">
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-heading">15+</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="trust_exp">Yillik Tajriba</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-teal-500 font-heading">50+</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="trust_docs">Xalqaro Shifokorlar</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-sky-500 font-heading">99.8%</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="trust_satisfaction">Ijobiy Sharhlar</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Interactive 3D Canvas Area -->
+                <div class="lg:col-span-5 relative flex items-center justify-center">
+                    <div class="relative w-full aspect-square max-w-[500px]">
+                        <!-- Canvas Container -->
+                        <div id="hero-3d-container" class="w-full h-full rounded-3xl overflow-hidden glass-card relative cursor-grab active:cursor-grabbing border border-sky-500/20 shadow-2xl">
+                            <!-- Overlay Instructions -->
+                            <div class="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-[11px] text-slate-400 bg-slate-950/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 pointer-events-none">
+                                <span class="flex items-center gap-1.5">
+                                    <i data-lucide="mouse-pointer-2" class="w-3.5 h-3.5 text-sky-400 animate-bounce"></i>
+                                    <span data-i18n="3d_hint">Sichqoncha bilan aylantiring</span>
+                                </span>
+                                <span id="3d-model-label" class="font-bold text-sky-400">DNK SPIRALI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- KEY SERVICES SECTION (WITH 3D CARDS) -->
+    <section id="services" class="py-24 bg-slate-100/60 dark:bg-slate-900/40 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-sky-500 dark:text-sky-400 text-xs font-bold tracking-widest uppercase" data-i18n="services_subtitle">Mutaxassislik Yonalishlari</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white" data-i18n="services_title">
+                    Zamonaviy Diagnostika va Davolash Xizmatlari
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base" data-i18n="services_desc">
+                    Har bir yo'nalish eng so'nggi avlod texnologiyalari va tajribali mutaxassislar nazorati ostida amalga oshiriladi.
+                </p>
+            </div>
+
+            <!-- Service Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+
+                <!-- Service 1: Kardiologiya -->
+                <div class="tilt-card glass-card rounded-3xl p-8 hover:border-sky-500/50 transition-all duration-300 group cursor-pointer" onclick="openBookingModal('Kardiologiya')">
+                    <div class="tilt-content space-y-6">
+                        <div class="w-16 h-16 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center group-hover:scale-110 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300 shadow-md">
+                            <i data-lucide="heart-pulse" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading" data-i18n="srv_cardio_title">Kardiologiya</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="srv_cardio_desc">
+                            Yurak-qon tomir kasalliklarini 3D EKO, Holter monitoring va EKGI orqali yuqori aniqlikda diagnostika qilish.
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 text-xs font-semibold text-sky-500">
+                            <span data-i18n="btn_learn_more">Batafsil & Qabul</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 2: Stomatologiya -->
+                <div class="tilt-card glass-card rounded-3xl p-8 hover:border-sky-500/50 transition-all duration-300 group cursor-pointer" onclick="openBookingModal('Stomatologiya')">
+                    <div class="tilt-content space-y-6">
+                        <div class="w-16 h-16 rounded-2xl bg-teal-500/10 text-teal-500 flex items-center justify-center group-hover:scale-110 group-hover:bg-teal-500 group-hover:text-white transition-all duration-300 shadow-md">
+                            <i data-lucide="smile" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading" data-i18n="srv_dental_title">3D Stomatologiya</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="srv_dental_desc">
+                            Og'riqsiz estetik stomatologiya, implantatsiya, vinirlar va kompyuterli 3D tish modellashtirish.
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 text-xs font-semibold text-sky-500">
+                            <span data-i18n="btn_learn_more">Batafsil & Qabul</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 3: Neyrologiya -->
+                <div class="tilt-card glass-card rounded-3xl p-8 hover:border-sky-500/50 transition-all duration-300 group cursor-pointer" onclick="openBookingModal('Neyrologiya')">
+                    <div class="tilt-content space-y-6">
+                        <div class="w-16 h-16 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-300 shadow-md">
+                            <i data-lucide="brain" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading" data-i18n="srv_neuro_title">Neyrologiya & Miya</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="srv_neuro_desc">
+                            Asab tizimi kasalliklarini kompleks davolash, EEG va miya tomirlari dopleagrafiyasi.
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 text-xs font-semibold text-sky-500">
+                            <span data-i18n="btn_learn_more">Batafsil & Qabul</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 4: MRT / UZI Diagnostika -->
+                <div class="tilt-card glass-card rounded-3xl p-8 hover:border-sky-500/50 transition-all duration-300 group cursor-pointer" onclick="openBookingModal('MRT Diagnostika')">
+                    <div class="tilt-content space-y-6">
+                        <div class="w-16 h-16 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center group-hover:scale-110 group-hover:bg-sky-500 group-hover:text-white transition-all duration-300 shadow-md">
+                            <i data-lucide="scan" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading" data-i18n="srv_diag_title">MRT & 4D UZI Diagnostika</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="srv_diag_desc">
+                            Yuqori aniqlikdagi Tesla MRT hamda 4D ultratovush tekshiruvlari orqali aniq tashxis qo'yish.
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 text-xs font-semibold text-sky-500">
+                            <span data-i18n="btn_learn_more">Batafsil & Qabul</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 5: Pediatriya -->
+                <div class="tilt-card glass-card rounded-3xl p-8 hover:border-sky-500/50 transition-all duration-300 group cursor-pointer" onclick="openBookingModal('Pediatriya')">
+                    <div class="tilt-content space-y-6">
+                        <div class="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300 shadow-md">
+                            <i data-lucide="baby" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading" data-i18n="srv_pedia_title">Pediatriya Markazi</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="srv_pedia_desc">
+                            Bolalar salomatligini muhofaza qilish, rejali emlashlar va mehribon munosabatdagi pediatrlar.
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 text-xs font-semibold text-sky-500">
+                            <span data-i18n="btn_learn_more">Batafsil & Qabul</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 6: Laboratoriya -->
+                <div class="tilt-card glass-card rounded-3xl p-8 hover:border-sky-500/50 transition-all duration-300 group cursor-pointer" onclick="openBookingModal('Laboratoriya')">
+                    <div class="tilt-content space-y-6">
+                        <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-md">
+                            <i data-lucide="flask-conical" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading" data-i18n="srv_lab_title">Ekspress Laboratoriya</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="srv_lab_desc">
+                            Avtomatlashtirilgan nemis uskunalarida 15 daqiqa ichida tahlil natijalarini olish imkoniyati.
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800 text-xs font-semibold text-sky-500">
+                            <span data-i18n="btn_learn_more">Batafsil & Qabul</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D VIRTUAL TOUR SECTION -->
+    <section id="tour" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Details -->
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-teal-500 font-bold text-xs tracking-widest uppercase" data-i18n="tour_subtitle">Interaktiv Tajriba</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white" data-i18n="tour_title">
+                        Klinikamiz Boylab 3D Virtual Sayohat
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="tour_desc">
+                        Klinikaga tashrif buyurishdan oldin uning zamonaviy xonalari, VIP palatalari hamda diagnostika bloklari bilan 360 darajada tanishib chiqing.
+                    </p>
+
+                    <!-- Room Selector Buttons -->
+                    <div class="space-y-3 pt-4">
+                        <button onclick="setTourRoom('reception')" id="tour-btn-reception" class="w-full p-4 rounded-2xl glass-card flex items-center justify-between border-sky-500/60 shadow-md">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 rounded-xl bg-sky-500/10 text-sky-500"><i data-lucide="building" class="w-5 h-5"></i></div>
+                                <span class="font-bold text-sm text-slate-900 dark:text-white" data-i18n="tour_room_1">Qabulxona (Reception)</span>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-sky-500"></i>
+                        </button>
+                        <button onclick="setTourRoom('mri')" id="tour-btn-mri" class="w-full p-4 rounded-2xl glass-card flex items-center justify-between border-transparent hover:border-slate-700">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 rounded-xl bg-teal-500/10 text-teal-500"><i data-lucide="cpu" class="w-5 h-5"></i></div>
+                                <span class="font-bold text-sm text-slate-900 dark:text-white" data-i18n="tour_room_2">MRT / Diagnostika Zali</span>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400"></i>
+                        </button>
+                        <button onclick="setTourRoom('vip')" id="tour-btn-vip" class="w-full p-4 rounded-2xl glass-card flex items-center justify-between border-transparent hover:border-slate-700">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 rounded-xl bg-amber-500/10 text-amber-500"><i data-lucide="bed-double" class="w-5 h-5"></i></div>
+                                <span class="font-bold text-sm text-slate-900 dark:text-white" data-i18n="tour_room_3">VIP Statsionar Palata</span>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right 3D Interactive Room Viewer Container -->
+                <div class="lg:col-span-7">
+                    <div class="relative w-full aspect-[4/3] rounded-3xl overflow-hidden glass-card border border-sky-500/20 shadow-2xl">
+                        <div id="virtual-tour-3d-container" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+                        
+                        <!-- Overlay Status Bar -->
+                        <div class="absolute top-4 left-4 right-4 flex items-center justify-between px-4 py-2 rounded-xl bg-slate-950/70 backdrop-blur-md text-white text-xs border border-white/10">
+                            <span class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span id="tour-status-text" class="font-semibold">Xona: Qabulxona (Reception)</span>
+                            </span>
+                            <span class="text-slate-400 text-[10px]">360° Panorama Control</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- DOCTORS SHOWCASE (WITH 3D TILT CARDS) -->
+    <section id="doctors" class="py-24 bg-slate-100/60 dark:bg-slate-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+                <div>
+                    <span class="text-sky-500 font-bold text-xs tracking-widest uppercase" data-i18n="doc_subtitle">Professional Jamoa</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-2" data-i18n="doc_title">
+                        Oliy Toifali Shifokorlarimiz
+                    </h2>
+                </div>
+                <div class="mt-4 md:mt-0 flex gap-2">
+                    <button class="p-3 rounded-2xl glass-card text-slate-700 dark:text-slate-200 hover:text-sky-500"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+                    <button class="p-3 rounded-2xl glass-card text-slate-700 dark:text-slate-200 hover:text-sky-500"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+                </div>
+            </div>
+
+            <!-- Doctor Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <!-- Doctor 1 -->
+                <div class="tilt-card glass-card rounded-3xl overflow-hidden group hover:shadow-2xl hover:shadow-sky-500/10 transition-all duration-300">
+                    <div class="relative h-72 bg-gradient-to-b from-sky-900/20 to-transparent flex items-end justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=600&auto=format&fit=crop" alt="Dr. Alisher Vahobov" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-slate-950/60 backdrop-blur-md text-[11px] font-bold text-teal-400 border border-teal-500/30">
+                            18+ yil tajriba
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white font-heading">Dr. Alisher Vahobov</h3>
+                        <p class="text-xs text-sky-500 font-semibold uppercase tracking-wider">Bosh Kardiolog / Tibbiyot Fanlari Doktori</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Germaniya klinikalarida amaliyot o'tagan yetakchi mutaxassis.</p>
+                        <button onclick="openBookingModal('Kardiologiya', 'Dr. Alisher Vahobov')" class="w-full mt-2 py-2.5 rounded-xl bg-sky-500/10 dark:bg-sky-500/20 text-sky-500 hover:bg-sky-500 hover:text-white text-xs font-bold transition-all">
+                            Qabulga Yozilish
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Doctor 2 -->
+                <div class="tilt-card glass-card rounded-3xl overflow-hidden group hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-300">
+                    <div class="relative h-72 bg-gradient-to-b from-teal-900/20 to-transparent flex items-end justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1594824813566-78a933722e03?q=80&w=600&auto=format&fit=crop" alt="Dr. Malika Karimova" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-slate-950/60 backdrop-blur-md text-[11px] font-bold text-teal-400 border border-teal-500/30">
+                            14+ yil tajriba
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white font-heading">Dr. Malika Karimova</h3>
+                        <p class="text-xs text-teal-500 font-semibold uppercase tracking-wider">Estetik Stomatolog & Ortodont</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Gollivud tabassumi hamda 3D vinirlar bo'yicha ekspert.</p>
+                        <button onclick="openBookingModal('Stomatologiya', 'Dr. Malika Karimova')" class="w-full mt-2 py-2.5 rounded-xl bg-teal-500/10 dark:bg-teal-500/20 text-teal-500 hover:bg-teal-500 hover:text-white text-xs font-bold transition-all">
+                            Qabulga Yozilish
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Doctor 3 -->
+                <div class="tilt-card glass-card rounded-3xl overflow-hidden group hover:shadow-2xl hover:shadow-sky-500/10 transition-all duration-300">
+                    <div class="relative h-72 bg-gradient-to-b from-indigo-900/20 to-transparent flex items-end justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=600&auto=format&fit=crop" alt="Dr. Timur Rahmatov" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-slate-950/60 backdrop-blur-md text-[11px] font-bold text-teal-400 border border-teal-500/30">
+                            16+ yil tajriba
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white font-heading">Dr. Timur Rahmatov</h3>
+                        <p class="text-xs text-indigo-400 font-semibold uppercase tracking-wider">Bosh Neyrohirurg</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Bosh va umurtqa pog'onasi mikrohirurgiyasi bo me'mori.</p>
+                        <button onclick="openBookingModal('Neyrologiya', 'Dr. Timur Rahmatov')" class="w-full mt-2 py-2.5 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500 hover:text-white text-xs font-bold transition-all">
+                            Qabulga Yozilish
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Doctor 4 -->
+                <div class="tilt-card glass-card rounded-3xl overflow-hidden group hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300">
+                    <div class="relative h-72 bg-gradient-to-b from-amber-900/20 to-transparent flex items-end justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=600&auto=format&fit=crop" alt="Dr. Nigora Saidova" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 right-3 px-3 py-1 rounded-full bg-slate-950/60 backdrop-blur-md text-[11px] font-bold text-teal-400 border border-teal-500/30">
+                            12+ yil tajriba
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white font-heading">Dr. Nigora Saidova</h3>
+                        <p class="text-xs text-amber-500 font-semibold uppercase tracking-wider">Oliy Toifali Pediatr</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">G'amxo'r va tajribali bolalar shifokori hamda nutriolog.</p>
+                        <button onclick="openBookingModal('Pediatriya', 'Dr. Nigora Saidova')" class="w-full mt-2 py-2.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 hover:bg-amber-500 hover:text-white text-xs font-bold transition-all">
+                            Qabulga Yozilish
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS & ANIMATED NETWORK SECTION -->
+    <section class="py-20 relative bg-slate-950 text-white overflow-hidden">
+        <!-- Canvas for particle constellation -->
+        <canvas id="stats-particles-canvas" class="absolute inset-0 w-full h-full opacity-40"></canvas>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div class="space-y-2 p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10">
+                    <div class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-teal-300 font-heading">
+                        <span class="counter" data-target="45000">0</span>+
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-400 font-medium" data-i18n="stat_patients">Sog'lom Bemorlar</p>
+                </div>
+                <div class="space-y-2 p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10">
+                    <div class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-mint font-heading">
+                        <span class="counter" data-target="120">0</span>+
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-400 font-medium" data-i18n="stat_equipment">Yuqori Aniq Texnikalar</p>
+                </div>
+                <div class="space-y-2 p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10">
+                    <div class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400 font-heading">
+                        <span class="counter" data-target="50">0</span>+
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-400 font-medium" data-i18n="stat_doctors">Malakali Shifokorlar</p>
+                </div>
+                <div class="space-y-2 p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10">
+                    <div class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-teal-300 font-heading">
+                        24/7
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-400 font-medium" data-i18n="stat_support">Tezkor Tibbiy Yordam</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING TABLE SECTION WITH CATEGORY TABS -->
+    <section id="pricing" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-sky-500 font-bold text-xs tracking-widest uppercase" data-i18n="price_subtitle">Shaffof Tariflar</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white" data-i18n="price_title">
+                    Xizmatlar Narxlar Jadvali
+                </h2>
+            </div>
+
+            <!-- Pricing Category Tabs -->
+            <div class="flex items-center justify-center gap-2 mt-10 overflow-x-auto pb-2">
+                <button onclick="filterPrices('all')" id="tab-price-all" class="px-5 py-2.5 rounded-xl font-semibold text-xs transition-all bg-sky-500 text-white shadow-lg shadow-sky-500/20">Barchasi</button>
+                <button onclick="filterPrices('diag')" id="tab-price-diag" class="px-5 py-2.5 rounded-xl font-semibold text-xs transition-all glass-card text-slate-600 dark:text-slate-300">Diagnostika / MRT</button>
+                <button onclick="filterPrices('dental')" id="tab-price-dental" class="px-5 py-2.5 rounded-xl font-semibold text-xs transition-all glass-card text-slate-600 dark:text-slate-300">Stomatologiya</button>
+                <button onclick="filterPrices('cardio')" id="tab-price-cardio" class="px-5 py-2.5 rounded-xl font-semibold text-xs transition-all glass-card text-slate-600 dark:text-slate-300">Kardiologiya</button>
+            </div>
+
+            <!-- Price Items Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10" id="pricing-grid">
+                <!-- Price Item 1 -->
+                <div class="price-card diag glass-card p-6 rounded-2xl flex items-center justify-between border-l-4 border-l-sky-500">
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-base">Bosh Miya MRT (1.5 Tesla)</h4>
+                        <p class="text-xs text-slate-500">30 daqiqa • Natija xulosa bilan</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-lg font-extrabold text-sky-500">450,000 UZS</span>
+                        <button onclick="openBookingModal('MRT Diagnostika')" class="block mt-1 text-[11px] font-bold text-slate-400 hover:text-sky-400">Yozilish →</button>
+                    </div>
+                </div>
+
+                <!-- Price Item 2 -->
+                <div class="price-card cardio glass-card p-6 rounded-2xl flex items-center justify-between border-l-4 border-l-rose-500">
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-base">Kardiolog Konsultatsiyasi + EKG</h4>
+                        <p class="text-xs text-slate-500">Bosh shifokor ko'rigi</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-lg font-extrabold text-sky-500">200,000 UZS</span>
+                        <button onclick="openBookingModal('Kardiologiya')" class="block mt-1 text-[11px] font-bold text-slate-400 hover:text-sky-400">Yozilish →</button>
+                    </div>
+                </div>
+
+                <!-- Price Item 3 -->
+                <div class="price-card dental glass-card p-6 rounded-2xl flex items-center justify-between border-l-4 border-l-teal-500">
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-base">Estetik Tish Tozalash & Polirofka</h4>
+                        <p class="text-xs text-slate-500">Ultrasonik + AirFlow</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-lg font-extrabold text-sky-500">350,000 UZS</span>
+                        <button onclick="openBookingModal('Stomatologiya')" class="block mt-1 text-[11px] font-bold text-slate-400 hover:text-sky-400">Yozilish →</button>
+                    </div>
+                </div>
+
+                <!-- Price Item 4 -->
+                <div class="price-card diag glass-card p-6 rounded-2xl flex items-center justify-between border-l-4 border-l-sky-500">
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-base">4D UZI Kompleks Tekshiruv</h4>
+                        <p class="text-xs text-slate-500">Barcha ichki a'zolar</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-lg font-extrabold text-sky-500">280,000 UZS</span>
+                        <button onclick="openBookingModal('MRT Diagnostika')" class="block mt-1 text-[11px] font-bold text-slate-400 hover:text-sky-400">Yozilish →</button>
+                    </div>
+                </div>
+
+                <!-- Price Item 5 -->
+                <div class="price-card cardio glass-card p-6 rounded-2xl flex items-center justify-between border-l-4 border-l-rose-500">
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-base">24 Soatlik Holter Monitoring</h4>
+                        <p class="text-xs text-slate-500">Sutkalik EKG tahlil</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-lg font-extrabold text-sky-500">320,000 UZS</span>
+                        <button onclick="openBookingModal('Kardiologiya')" class="block mt-1 text-[11px] font-bold text-slate-400 hover:text-sky-400">Yozilish →</button>
+                    </div>
+                </div>
+
+                <!-- Price Item 6 -->
+                <div class="price-card dental glass-card p-6 rounded-2xl flex items-center justify-between border-l-4 border-l-teal-500">
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white text-base">Shveytsariya Tish Implantanti</h4>
+                        <p class="text-xs text-slate-500">Kafolat sertifikati bilan</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-lg font-extrabold text-sky-500">3,200,000 UZS</span>
+                        <button onclick="openBookingModal('Stomatologiya')" class="block mt-1 text-[11px] font-bold text-slate-400 hover:text-sky-400">Yozilish →</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SLIDER SECTION -->
+    <section class="py-24 bg-slate-100/60 dark:bg-slate-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-3 mb-16">
+                <span class="text-sky-500 font-bold text-xs tracking-widest uppercase" data-i18n="rev_subtitle">Bemorlarimiz Fikri</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white" data-i18n="rev_title">
+                    Ishonch va Samimiy Minnatdorchilik
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-3xl space-y-4 relative">
+                    <div class="flex items-center gap-1 text-amber-400">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 italic leading-relaxed">
+                        "Klinikadagi 3D MRT va shifokorlarning e'tibori meni hayratda qoldirdi. Umuman navbatsiz, qulay sharoitlarda tezkor tashxis oldim!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+                        <div class="w-10 h-10 rounded-full bg-sky-500/20 text-sky-500 font-bold flex items-center justify-center">S.O</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Sardor Oripov</h4>
+                            <p class="text-xs text-slate-500">Toshkent sh.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl space-y-4 relative">
+                    <div class="flex items-center gap-1 text-amber-400">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 italic leading-relaxed">
+                        "Stomatolog Malika Karimovaga alohida rahmat. Tishlarimni implantatsiya qilish umuman og'riqsiz va yuqori estetikada o'tdi."
+                    </p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+                        <div class="w-10 h-10 rounded-full bg-teal-500/20 text-teal-500 font-bold flex items-center justify-center">G.A</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Gulnora Ahmedova</h4>
+                            <p class="text-xs text-slate-500">Samarqand sh.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl space-y-4 relative">
+                    <div class="flex items-center gap-1 text-amber-400">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 italic leading-relaxed">
+                        "Farzandim bilan pediatriya bo'limiga keldik. Shifokorlar juda mehmondo'st va bolaga do'stona yondashishdi. Juda mamnunmiz!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-500 font-bold flex items-center justify-center">D.B</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900 dark:text-white">Dilnoza Boboyeva</h4>
+                            <p class="text-xs text-slate-500">Toshkent vil.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ & CONTACT SECTION -->
+    <section id="contact" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- FAQ Accordion -->
+                <div class="lg:col-span-6 space-y-6">
+                    <span class="text-sky-500 font-bold text-xs tracking-widest uppercase" data-i18n="faq_subtitle">Kop Beriladigan Savollar</span>
+                    <h2 class="text-3xl font-extrabold font-heading text-slate-900 dark:text-white" data-i18n="faq_title">
+                        Tez-Tez So'raladigan Savollar
+                    </h2>
+
+                    <div class="space-y-4 pt-4">
+                        <details class="glass-card p-5 rounded-2xl group cursor-pointer">
+                            <summary class="font-bold text-slate-900 dark:text-white flex justify-between items-center list-none">
+                                <span>Onlayn qabulga yozilish tartibi qanday?</span>
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-sky-500 group-open:rotate-180 transition-transform"></i>
+                            </summary>
+                            <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Saytimizdagi "Qabulga yozilish" tugmasini bosing, mutaxassislik, qulay sana va vaqtni tanlang. Operatorimiz 5 daqiqa ichida siz bilan bog'lanadi.
+                            </p>
+                        </details>
+
+                        <details class="glass-card p-5 rounded-2xl group cursor-pointer">
+                            <summary class="font-bold text-slate-900 dark:text-white flex justify-between items-center list-none">
+                                <span>Tahlil natijalarini qanchada va qanday olaman?</span>
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-sky-500 group-open:rotate-180 transition-transform"></i>
+                            </summary>
+                            <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Ekspress laboratoriya natijalari 15-30 daqiqa ichida tayyor bo'ladi. Natijalarni Telegram botimiz yoki elektron pochtangiz orqali ham olasiz.
+                            </p>
+                        </details>
+
+                        <details class="glass-card p-5 rounded-2xl group cursor-pointer">
+                            <summary class="font-bold text-slate-900 dark:text-white flex justify-between items-center list-none">
+                                <span>Dam olish kunlari ham klinikangiz ishlaydimi?</span>
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-sky-500 group-open:rotate-180 transition-transform"></i>
+                            </summary>
+                            <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                Ha, klinikalarimiz haftaning 7 kuni soat 08:00 dan 20:00 gacha xizmat ko'rsatadi. Tez tibbiy yordam va reanimatsiya esa 24/7 rejimida ishlaydi.
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Contact & Location Box -->
+                <div class="lg:col-span-6 glass-card p-8 rounded-3xl border border-sky-500/20 space-y-6">
+                    <h3 class="text-2xl font-bold font-heading text-slate-900 dark:text-white">Biz Bilan Bog'laning</h3>
+                    
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-start gap-4 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/50">
+                            <div class="p-2.5 rounded-xl bg-sky-500 text-white"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+                            <div>
+                                <h5 class="font-bold text-slate-900 dark:text-white">Manzil</h5>
+                                <p class="text-slate-500 dark:text-slate-400">Toshkent sh., Amir Temur shox ko'chasi, 108-uy</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/50">
+                            <div class="p-2.5 rounded-xl bg-teal-500 text-white"><i data-lucide="phone-call" class="w-5 h-5"></i></div>
+                            <div>
+                                <h5 class="font-bold text-slate-900 dark:text-white">Telefon raqamlar</h5>
+                                <p class="text-slate-500 dark:text-slate-400">+998 (71) 200-00-00 / +998 (90) 123-45-67</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/50">
+                            <div class="p-2.5 rounded-xl bg-indigo-500 text-white"><i data-lucide="clock" class="w-5 h-5"></i></div>
+                            <div>
+                                <h5 class="font-bold text-slate-900 dark:text-white">Ish vaqti</h5>
+                                <p class="text-slate-500 dark:text-slate-400">Dush - Yak: 08:00 - 20:00 (Shoshilinch yordam 24/7)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messenger Links -->
+                    <div class="flex gap-4 pt-2">
+                        <a href="https://t.me" target="_blank" class="flex-1 py-3 rounded-2xl bg-sky-500/10 text-sky-500 font-bold text-xs flex items-center justify-center gap-2 hover:bg-sky-500 hover:text-white transition-all">
+                            <i data-lucide="send" class="w-4 h-4"></i> Telegram
+                        </a>
+                        <a href="https://wa.me" target="_blank" class="flex-1 py-3 rounded-2xl bg-emerald-500/10 text-emerald-500 font-bold text-xs flex items-center justify-center gap-2 hover:bg-emerald-500 hover:text-white transition-all">
+                            <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-400 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-teal-400 flex items-center justify-center text-white">
+                            <i data-lucide="activity" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-lg font-bold text-white font-heading brand-name">[KLINIKA NOMI]</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Futuristik 3D medtech texnologiyalari va xalqaro standartdagi tibbiyot markazi.
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold text-white mb-4">Bo'limlar</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#services" class="hover:text-sky-400">Stomatologiya</a></li>
+                        <li><a href="#services" class="hover:text-sky-400">Kardiologiya</a></li>
+                        <li><a href="#services" class="hover:text-sky-400">MRT Diagnostika</a></li>
+                        <li><a href="#services" class="hover:text-sky-400">Neyrologiya</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold text-white mb-4">Tezkor Havolalar</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#tour" class="hover:text-sky-400">3D Virtual Tur</a></li>
+                        <li><a href="#doctors" class="hover:text-sky-400">Shifokorlarimiz</a></li>
+                        <li><a href="#pricing" class="hover:text-sky-400">Narxlar</a></li>
+                        <li><a href="#contact" class="hover:text-sky-400">Aloqa</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold text-white mb-4">Ijtimoiy Tarmoqlar</h5>
+                    <div class="flex gap-3 text-white">
+                        <a href="#" class="p-2.5 rounded-xl bg-slate-800 hover:bg-sky-500 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                        <a href="#" class="p-2.5 rounded-xl bg-slate-800 hover:bg-sky-500 transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                        <a href="#" class="p-2.5 rounded-xl bg-slate-800 hover:bg-sky-500 transition-colors"><i data-lucide="youtube" class="w-4 h-4"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+                <p>&copy; 2026 <span class="brand-name">[KLINIKA NOMI]</span>. Barcha huquqlar himoyalangan.</p>
+                <p class="mt-2 sm:mt-0">Design & Tech: Cyber MedTech Studio</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE APPOINTMENT BOOKING MODAL -->
+    <div id="booking-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="relative w-full max-w-lg glass-card rounded-3xl p-8 border border-sky-500/30 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl bg-sky-500/10 text-sky-500">
+                        <i data-lucide="calendar-check" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold font-heading text-slate-900 dark:text-white" data-i18n="modal_title">Onlayn Qabulga Yozilish</h3>
+                        <p class="text-xs text-slate-500">1 daqiqada band qiling</p>
+                    </div>
+                </div>
+                <button onclick="closeBookingModal()" class="p-2 rounded-xl text-slate-400 hover:text-white bg-slate-100 dark:bg-slate-800">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Booking Form -->
+            <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">To'liq Ismingiz</label>
+                    <input type="text" id="patient-name" required placeholder="Masalan: Sardor Rahimov" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:border-sky-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Telefon Raqamingiz</label>
+                    <input type="tel" id="patient-phone" required placeholder="+998 (90) 123-45-67" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:border-sky-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Mutaxassislik</label>
+                        <select id="booking-specialty" class="w-full px-3 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500">
+                            <option value="Kardiologiya">Kardiologiya</option>
+                            <option value="Stomatologiya">Stomatologiya</option>
+                            <option value="Neyrologiya">Neyrologiya</option>
+                            <option value="MRT Diagnostika">MRT Diagnostika</option>
+                            <option value="Pediatriya">Pediatriya</option>
+                            <option value="Laboratoriya">Laboratoriya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Shifokor (Ixtiyoriy)</label>
+                        <select id="booking-doctor" class="w-full px-3 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500">
+                            <option value="Aynan yo'q">Istalgan bo'sh shifokor</option>
+                            <option value="Dr. Alisher Vahobov">Dr. Alisher Vahobov</option>
+                            <option value="Dr. Malika Karimova">Dr. Malika Karimova</option>
+                            <option value="Dr. Timur Rahmatov">Dr. Timur Rahmatov</option>
+                            <option value="Dr. Nigora Saidova">Dr. Nigora Saidova</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Sana</label>
+                        <input type="date" id="booking-date" required class="w-full px-3 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Vaqt</label>
+                        <select id="booking-time" class="w-full px-3 py-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:border-sky-500">
+                            <option value="09:00">09:00 - 10:00</option>
+                            <option value="11:00">11:00 - 12:00</option>
+                            <option value="14:00">14:00 - 15:00</option>
+                            <option value="16:00">16:00 - 17:00</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-4 rounded-2xl bg-gradient-to-r from-sky-500 to-teal-500 text-white font-bold text-sm shadow-xl shadow-sky-500/20 hover:scale-[1.01] transition-transform">
+                    Tasdiqlash va Yozilish
+                </button>
+            </form>
+
+            <!-- Success State Message -->
+            <div id="booking-success" class="hidden text-center space-y-4 py-6">
+                <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+                    <i data-lucide="check-circle" class="w-10 h-10"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-900 dark:text-white">Qabul Muvaffaqiyatli Band Qilindi!</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Arizangiz qabul qilindi. Operatorimiz siz bilan ko'rsatilgan telefon raqami orqali tez orada bog'lanadi.
+                </p>
+                <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-xs space-y-1 text-left">
+                    <div><span class="font-bold">Band raqami:</span> #MED-<span id="res-id">8921</span></div>
+                    <div><span class="font-bold">Sana va Vaqt:</span> <span id="res-datetime">--</span></div>
+                </div>
+                <button onclick="closeBookingModal()" class="w-full py-3 rounded-xl bg-sky-500 text-white text-xs font-bold">Yopish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC & THREE.JS ENGINE -->
+    <script>
+
+        // CONFIGURABLE CLINIC PLACEHOLDER NAME
+        const CLINIC_NAME = "MedNova Clinic";
+
+        // Apply Clinic Name Placeholder Across HTML Elements
+        document.querySelectorAll('.brand-name').forEach(el => {
+            el.textContent = CLINIC_NAME;
+        });
+
+        // MULTI-LANGUAGE TRANSLATION DICTIONARY
+        const i18n = {
+            uz: {
+                nav_services: "Xizmatlar",
+                nav_tour: "3D Virtual Tur",
+                nav_doctors: "Shifokorlar",
+                nav_pricing: "Narxlar",
+                nav_about: "Biz haqimizda",
+                nav_contact: "Aloqa",
+                btn_book: "Qabulga yozilish",
+                hero_badge: "Keyingi Avlod MedTech Klinikasi",
+                hero_title_1: "Sog'lig'ingiz Uchun",
+                hero_title_2: "Futuristik va Yuqori Aniq",
+                hero_title_3: "Tibbiy Tasisat",
+                hero_desc: "Sun'iy intellekt tashxislash ko'magi, 3D vizualizatsiya hamda Yevropa standartidagi xalqaro shifokorlar jamoasi.",
+                hero_cta_primary: "Onlayn Qabulga Yozilish",
+                hero_cta_secondary: "3D Klinikani Ko'rish",
+                trust_exp: "Yillik Tajriba",
+                trust_docs: "Xalqaro Shifokorlar",
+                trust_satisfaction: "Ijobiy Sharhlar",
+                "3d_hint": "Sichqoncha bilan aylantiring",
+                services_title: "Zamonaviy Diagnostika va Davolash Xizmatlari",
+                tour_title: "Klinikamiz Boylab 3D Virtual Sayohat",
+                doc_title: "Oliy Toifali Shifokorlarimiz",
+                modal_title: "Onlayn Qabulga Yozilish"
+            },
+            ru: {
+                nav_services: "Услуги",
+                nav_tour: "3D Виртуальный тур",
+                nav_doctors: "Врачи",
+                nav_pricing: "Цены",
+                nav_about: "О нас",
+                nav_contact: "Контакты",
+                btn_book: "Записаться на прием",
+                hero_badge: "Kлиника Нового Поколения MedTech",
+                hero_title_1: "Для Вашего Здоровья",
+                hero_title_2: "Футуристическая и Точная",
+                hero_title_3: "Медицинская Клиника",
+                hero_desc: "ИИ-диагностика, 3D-визуализация и международная команда врачей европейского стандарта.",
+                hero_cta_primary: "Записаться Онлайн",
+                hero_cta_secondary: "3D Тур по Клинике",
+                trust_exp: "Лет Опыта",
+                trust_docs: "Врачей-Экспертов",
+                trust_satisfaction: "Положительных Отзывов",
+                "3d_hint": "Вращайте мышью",
+                services_title: "Современные Диагностические и Лечебные Услуги",
+                tour_title: "3D Виртуальный Тур по Клинике",
+                doc_title: "Наши Врачи Высшей Категории",
+                modal_title: "Онлайн Запись на Прием"
+            },
+            en: {
+                nav_services: "Services",
+                nav_tour: "3D Virtual Tour",
+                nav_doctors: "Doctors",
+                nav_pricing: "Pricing",
+                nav_about: "About Us",
+                nav_contact: "Contact",
+                btn_book: "Book Appointment",
+                hero_badge: "Next-Gen MedTech Center",
+                hero_title_1: "For Your Health",
+                hero_title_2: "Futuristic & Precision",
+                hero_title_3: "Medical Institution",
+                hero_desc: "AI diagnostics support, 3D visualization, and European standard international doctors.",
+                hero_cta_primary: "Book Appointment Online",
+                hero_cta_secondary: "View 3D Tour",
+                trust_exp: "Years Experience",
+                trust_docs: "Expert Doctors",
+                trust_satisfaction: "Positive Reviews",
+                "3d_hint": "Drag to rotate in 3D",
+                services_title: "Modern Diagnostics & Medical Services",
+                tour_title: "3D Virtual Tour Across Clinic",
+                doc_title: "Our Top Medical Specialists",
+                modal_title: "Online Appointment Booking"
+            }
+        };
+
+        function setLanguage(lang) {
+            ['uz', 'ru', 'en'].forEach(l => {
+                const btn = document.getElementById(`lang-${l}`);
+                if (btn) {
+                    if (l === lang) {
+                        btn.className = "px-2.5 py-1 rounded-lg transition-all bg-sky-500 text-white shadow-sm font-bold";
+                    } else {
+                        btn.className = "px-2.5 py-1 rounded-lg transition-all text-slate-600 dark:text-slate-300 hover:text-sky-400 font-normal";
+                    }
+                }
+            });
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang] && i18n[lang][key]) {
+                    el.textContent = i18n[lang][key];
+                }
+            });
+        }
+
+
+        // HERO 3D THREE.JS PROCEDURAL SCENE ENGINE
+        let heroScene, heroCamera, heroRenderer, current3DMesh;
+        let active3DMode = 'dna';
+        let mouseX = 0, mouseY = 0;
+
+        function initHero3DScene() {
+            const container = document.getElementById('hero-3d-container');
+            if (!container) return;
+
+            heroScene = new THREE.Scene();
+            heroCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            heroCamera.position.z = 24;
+
+            heroRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            heroRenderer.setSize(container.clientWidth, container.clientHeight);
+            heroRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(heroRenderer.domElement);
+
+            // Ambient & Point Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            heroScene.add(ambientLight);
+
+            const skyPointLight = new THREE.PointLight(0x0ea5e9, 2.5, 50);
+            skyPointLight.position.set(10, 15, 10);
+            heroScene.add(skyPointLight);
+
+            const tealPointLight = new THREE.PointLight(0x14b8a6, 2, 50);
+            tealPointLight.position.set(-10, -15, -10);
+            heroScene.add(tealPointLight);
+
+            // Floating Ambient Particles Background
+            const particleGeo = new THREE.BufferGeometry();
+            const count = 250;
+            const positions = new Float32Array(count * 3);
+            for (let i = 0; i < count * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 40;
+            }
+            particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const particleMat = new THREE.PointsMaterial({
+                size: 0.15,
+                color: 0x38bdf8,
+                transparent: true,
+                opacity: 0.6
+            });
+            const particles = new THREE.Points(particleGeo, particleMat);
+            heroScene.add(particles);
+
+            // Build Initial DNA Helix Model
+            createDNAHelixMesh();
+
+            // Interactivity: Drag Mouse / Touch Parallax
+            let isDragging = false;
+            let prevMouseX = 0, prevMouseY = 0;
+
+            container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                prevMouseX = e.clientX;
+                prevMouseY = e.clientY;
+            });
+
+            window.addEventListener('mouseup', () => isDragging = false);
+
+            container.addEventListener('mousemove', (e) => {
+                if (isDragging && current3DMesh) {
+                    const deltaX = e.clientX - prevMouseX;
+                    const deltaY = e.clientY - prevMouseY;
+                    current3DMesh.rotation.y += deltaX * 0.008;
+                    current3DMesh.rotation.x += deltaY * 0.008;
+                    prevMouseX = e.clientX;
+                    prevMouseY = e.clientY;
+                }
+            });
+
+            // Window Resize Listener
+            window.addEventListener('resize', () => {
+                if (!container) return;
+                heroCamera.aspect = container.clientWidth / container.clientHeight;
+                heroCamera.updateProjectionMatrix();
+                heroRenderer.setSize(container.clientWidth, container.clientHeight);
+            });
+
+            // Animation Loop
+            function animateHero() {
+                requestAnimationFrame(animateHero);
+                if (current3DMesh) {
+                    current3DMesh.rotation.y += 0.005;
+                }
+                particles.rotation.y += 0.0008;
+                heroRenderer.render(heroScene, heroCamera);
+            }
+            animateHero();
+        }
+
+
+        // PROCEDURAL 3D GEOMETRY GENERATORS
+        function clear3DObject() {
+            if (current3DMesh) {
+                heroScene.remove(current3DMesh);
+            }
+        }
+
+        function createDNAHelixMesh() {
+            clear3DObject();
+            const group = new THREE.Group();
+            const sphereGeo = new THREE.SphereGeometry(0.35, 16, 16);
+            const cylinderGeo = new THREE.CylinderGeometry(0.08, 0.08, 1, 8);
+
+            const mat1 = new THREE.MeshPhongMaterial({ color: 0x0ea5e9, shininess: 100 });
+            const mat2 = new THREE.MeshPhongMaterial({ color: 0x14b8a6, shininess: 100 });
+            const strutMat = new THREE.MeshPhongMaterial({ color: 0x34d399, transparent: true, opacity: 0.8 });
+
+            const length = 24;
+            for (let i = 0; i < length; i++) {
+                const y = (i - length / 2) * 0.65;
+                const angle = i * 0.45;
+                const radius = 3.2;
+
+                const x1 = Math.cos(angle) * radius;
+                const z1 = Math.sin(angle) * radius;
+                const x2 = Math.cos(angle + Math.PI) * radius;
+                const z2 = Math.sin(angle + Math.PI) * radius;
+
+                const s1 = new THREE.Mesh(sphereGeo, mat1);
+                s1.position.set(x1, y, z1);
+                group.add(s1);
+
+                const s2 = new THREE.Mesh(sphereGeo, mat2);
+                s2.position.set(x2, y, z2);
+                group.add(s2);
+
+                if (i % 2 === 0) {
+                    const strut = new THREE.Mesh(cylinderGeo, strutMat);
+                    strut.position.set(0, y, 0);
+                    strut.scale.set(1, radius * 2, 1);
+                    strut.rotation.z = Math.PI / 2;
+                    strut.rotation.y = -angle;
+                    group.add(strut);
+                }
+            }
+            current3DMesh = group;
+            heroScene.add(current3DMesh);
+            document.getElementById('3d-model-label').textContent = "DNK SPIRALI";
+        }
+
+        function createHeart3DMesh() {
+            clear3DObject();
+            const group = new THREE.Group();
+            const coreGeo = new THREE.IcosahedronGeometry(3.5, 2);
+            const coreMat = new THREE.MeshPhongMaterial({
+                color: 0xf43f5e,
+                wireframe: true,
+                emissive: 0x881337,
+                emissiveIntensity: 0.4
+            });
+            const heartCore = new THREE.Mesh(coreGeo, coreMat);
+            group.add(heartCore);
+
+            // Glowing Pulsing Inner Sphere
+            const innerGeo = new THREE.SphereGeometry(2.2, 32, 32);
+            const innerMat = new THREE.MeshPhongMaterial({
+                color: 0xf43f5e,
+                shininess: 100,
+                transparent: true,
+                opacity: 0.85
+            });
+            const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+            group.add(innerMesh);
+
+            current3DMesh = group;
+            heroScene.add(current3DMesh);
+            document.getElementById('3d-model-label').textContent = "3D HOLOGRAPHIC HEART";
+        }
+
+        function createDental3DMesh() {
+            clear3DObject();
+            const group = new THREE.Group();
+            const crownGeo = new THREE.CylinderGeometry(2.8, 2.2, 3, 16);
+            const toothMat = new THREE.MeshPhongMaterial({
+                color: 0xf8fafc,
+                shininess: 120,
+                specular: 0x38bdf8
+            });
+            const tooth = new THREE.Mesh(crownGeo, toothMat);
+            group.add(tooth);
+
+            current3DMesh = group;
+            heroScene.add(current3DMesh);
+            document.getElementById('3d-model-label').textContent = "STOMATOLOGIK MODEL";
+        }
+
+        function createBrain3DMesh() {
+            clear3DObject();
+            const group = new THREE.Group();
+            const geo = new THREE.SphereGeometry(3.8, 16, 16);
+            const mat = new THREE.PointsMaterial({
+                color: 0x818cf8,
+                size: 0.25
+            });
+            const brainNetwork = new THREE.Points(geo, mat);
+            group.add(brainNetwork);
+
+            current3DMesh = group;
+            heroScene.add(current3DMesh);
+            document.getElementById('3d-model-label').textContent = "NEYRO TARMOQ MODELI";
+        }
+
+        function switch3DModel(type) {
+            ['dna', 'heart', 'dental', 'brain'].forEach(t => {
+                const btn = document.getElementById(`btn-3d-${t}`);
+                if (btn) {
+                    if (t === type) {
+                        btn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold glass-card border-sky-500 text-sky-500 shadow-md";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold glass-card text-slate-400 hover:text-white";
+                    }
+                }
+            });
+
+            if (type === 'dna') createDNAHelixMesh();
+            else if (type === 'heart') createHeart3DMesh();
+            else if (type === 'dental') createDental3DMesh();
+            else if (type === 'brain') createBrain3DMesh();
+        }
+
+
+        // 3D VIRTUAL TOUR ROOM SCENE ENGINE
+        let tourScene, tourCamera, tourRenderer, tourRoomMesh;
+
+        function initVirtualTourScene() {
+            const container = document.getElementById('virtual-tour-3d-container');
+            if (!container) return;
+
+            tourScene = new THREE.Scene();
+            tourCamera = new THREE.PerspectiveCamera(65, container.clientWidth / container.clientHeight, 0.1, 100);
+            tourCamera.position.set(0, 0, 0.1);
+
+            tourRenderer = new THREE.WebGLRenderer({ antialias: true });
+            tourRenderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(tourRenderer.domElement);
+
+            // Create Procedural Panoramic Room Sphere Texture
+            const sphereGeo = new THREE.SphereGeometry(30, 64, 32);
+            sphereGeo.scale(-1, 1, 1);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024; canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            // Draw Medical Room Grid Lines Pattern
+            ctx.fillStyle = '#0b1329';
+            ctx.fillRect(0, 0, 1024, 512);
+            ctx.strokeStyle = '#0ea5e9';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < 1024; i += 64) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 512); ctx.stroke();
+            }
+            for (let j = 0; j < 512; j += 64) {
+                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(1024, j); ctx.stroke();
+            }
+
+            const roomTexture = new THREE.CanvasTexture(canvas);
+            const sphereMat = new THREE.MeshBasicMaterial({ map: roomTexture });
+            tourRoomMesh = new THREE.Mesh(sphereGeo, sphereMat);
+            tourScene.add(tourRoomMesh);
+
+            // Tour Orbit Controls Simulation
+            let isTourDragging = false, lon = 0, lat = 0;
+            let startMouseX = 0, startMouseY = 0;
+
+            container.addEventListener('mousedown', (e) => {
+                isTourDragging = true;
+                startMouseX = e.clientX;
+                startMouseY = e.clientY;
+            });
+            window.addEventListener('mouseup', () => isTourDragging = false);
+            container.addEventListener('mousemove', (e) => {
+                if (isTourDragging) {
+                    lon -= (e.clientX - startMouseX) * 0.2;
+                    lat += (e.clientY - startMouseY) * 0.2;
+                    startMouseX = e.clientX;
+                    startMouseY = e.clientY;
+                }
+            });
+
+            function animateTour() {
+                requestAnimationFrame(animateTour);
+                lat = Math.max(-85, Math.min(85, lat));
+                const phi = THREE.MathUtils.degToRad(90 - lat);
+                const theta = THREE.MathUtils.degToRad(lon);
+
+                tourCamera.target = new THREE.Vector3(
+                    500 * Math.sin(phi) * Math.cos(theta),
+                    500 * Math.cos(phi),
+                    500 * Math.sin(phi) * Math.sin(theta)
+                );
+                tourCamera.lookAt(tourCamera.target);
+                tourRenderer.render(tourScene, tourCamera);
+            }
+            animateTour();
+        }
+
+        function setTourRoom(roomKey) {
+            const labelMap = {
+                reception: "Qabulxona (Reception)",
+                mri: "MRT / Diagnostika Zali",
+                vip: "VIP Statsionar Palata"
+            };
+            document.getElementById('tour-status-text').textContent = "Xona: " + (labelMap[roomKey] || roomKey);
+        }
+
+
+        // VANILLA TILT & CURSOR PHYSICS
+        function initTiltCards() {
+            const cards = document.querySelectorAll('.tilt-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    card.style.transform = `rotateY(${x / 18}deg) rotateX(${-y / 18}deg) scale(1.02)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `rotateY(0deg) rotateX(0deg) scale(1)`;
+                });
+            });
+        }
+
+        // CUSTOM CURSOR FOLLOWING
+        const cursor = document.getElementById('custom-cursor');
+        window.addEventListener('mousemove', (e) => {
+            if (cursor) {
+                cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            }
+        });
+
+
+        // BOOKING MODAL LOGIC
+        function openBookingModal(specialty = 'Kardiologiya', doctor = '') {
+            const modal = document.getElementById('booking-modal');
+            modal.classList.remove('hidden');
+            if (specialty) document.getElementById('booking-specialty').value = specialty;
+            if (doctor) document.getElementById('booking-doctor').value = doctor;
+            
+            // Set default date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('booking-date').value = tomorrow.toISOString().split('T')[0];
+        }
+
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.add('hidden');
+            document.getElementById('booking-form').classList.remove('hidden');
+            document.getElementById('booking-success').classList.add('hidden');
+        }
+
+        function handleBookingSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('patient-name').value;
+            const date = document.getElementById('booking-date').value;
+            const time = document.getElementById('booking-time').value;
+
+            document.getElementById('booking-form').classList.add('hidden');
+            document.getElementById('booking-success').classList.remove('hidden');
+            document.getElementById('res-datetime').textContent = `${date} | ${time}`;
+            document.getElementById('res-id').textContent = Math.floor(1000 + Math.random() * 9000);
+        }
+
+        // PRICE CATEGORY FILTER
+        function filterPrices(cat) {
+            const cards = document.querySelectorAll('.price-card');
+            cards.forEach(card => {
+                if (cat === 'all' || card.classList.contains(cat)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // MOBILE MENU TOGGLE
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+
+        // THEME TOGGLE (DARK / LIGHT MODE)
+        const themeToggles = [document.getElementById('theme-toggle'), document.getElementById('theme-toggle-mobile')];
+        themeToggles.forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    document.documentElement.classList.toggle('dark');
+                });
+            }
+        });
+
+        // STATS COUNTER ANIMATION
+        function initCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                let count = 0;
+                const inc = target / 100;
+                const update = () => {
+                    count += inc;
+                    if (count < target) {
+                        counter.textContent = Math.ceil(count);
+                        setTimeout(update, 20);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                update();
+            });
+        }
+
+        // STATS BACKGROUND PARTICLES CANVAS
+        function initStatsParticles() {
+            const canvas = document.getElementById('stats-particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            const particles = Array.from({ length: 40 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.8,
+                vy: (Math.random() - 0.5) * 0.8
+            }));
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#0ea5e9';
+                ctx.strokeStyle = 'rgba(14, 165, 233, 0.15)';
+
+                particles.forEach((p, i) => {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                        if (dist < 100) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // WINDOW LOAD INITIALIZATION
+        window.addEventListener('load', () => {
+            // Hide Preloader
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 700);
+            }
+
+            // Initialize Lucide Icons
+            lucide.createIcons();
+
+            // Initialize 3D Engine & Interactive Features
+            initHero3DScene();
+            initVirtualTourScene();
+            initTiltCards();
+            initCounters();
+            initStatsParticles();
+        });
+    </script>
+</body>
+</html>
